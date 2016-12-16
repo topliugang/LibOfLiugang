@@ -91,31 +91,12 @@ def fuck_89ip():
 
 
 
+http://spys.ru/free-proxy-list/CN/
+http://gatherproxy.com/proxylist/country/?c=China
+http://cnproxy.com/proxy1.html
+http://www.proxylisty.com/country/China-ip-list
 
 
-
-
-
-
-
-	#soup = BeautifulSoup(html, 'html.parser')
-	#fuck = soup.find(class_ = "mass")
-	
-
-
-	"""
-	table = soup.select('tbody')[0]
-	trs = table.select('tr')
-	for tr in trs:
-		tds = tr.select('td')
-		ip = tds[0].string
-		port = tds[1].string
-		#put into dict
-		proxys[ip] = port
-	
-	for sb in proxys:
-		print sb, proxys[sb]
-	"""
 if __name__ == '__main__':
 	#main()
 	#fuck_89ip()

@@ -26,9 +26,8 @@ def fuck_xicidaili():
 			#put into dict
 			proxys[ip] = port
 		
-		for sb in proxys:
-			print sb, proxys[sb]
-		exit()
+		
+		
 
 def fuck_kuaidaili():
 	urls = []
@@ -50,9 +49,7 @@ def fuck_kuaidaili():
 			#put into dict
 			proxys[ip] = port
 		
-		for sb in proxys:
-			print sb, proxys[sb]
-		exit()		
+		
 
 def fuck_nianshao():
 	urls = []
@@ -73,21 +70,32 @@ def fuck_nianshao():
 			#put into dict
 			proxys[ip] = port
 		
-		for sb in proxys:
-			print sb, proxys[sb]
-		exit()		
+			
 
 def fuck_89ip():
 	url = 'http://www.89ip.cn/tiqu.php?sxb=&tqsl=5000&ports=&ktip=&xl=on&submit=%CC%E1++%C8%A1'
+	proxys = dict()# == proxys = {}
 	html = mylib.get_html_from_url(url)
-	
+	#html = unicode(html, "gb2312").encode("utf8")
+	#编码问题 显示的时候加上
+	ip_port_pattern = re.compile(r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d{1,5}')
+	ip_ports = ip_port_pattern.findall(html)
+	for ip_port in ip_ports:
+		ip_pattern = re.compile(r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}')
+		ip = ip_pattern.match(ip_port).group()
+		#print ip
+		port_pattern = re.compile(r':\d{1,5}')
+		port = port_pattern.findall(ip_port)[0]
+		#print port[1:]
+		proxys[ip] = port[1:]
 
-	html = unicode(html, "gb2312").encode("utf8")
-	#pattern = re.compile(r'\d+\.\d+\.\d+\.\d+')
-	pattern = re.compile(r'(?<![\.\d])(?:\d{1,3}\.){3}\d{1,3}(?![\.\d])')
-	match = pattern.findall(html)
 
-	print match
+
+
+
+
+
+
 
 
 	#soup = BeautifulSoup(html, 'html.parser')
@@ -110,6 +118,7 @@ def fuck_89ip():
 	"""
 if __name__ == '__main__':
 	#main()
+	#fuck_89ip()
 	fuck_89ip()
-	
+
 

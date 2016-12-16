@@ -1,6 +1,7 @@
 #encoding:UTF-8
 import mylib
 from bs4 import BeautifulSoup
+import re
 
 
 
@@ -79,9 +80,20 @@ def fuck_nianshao():
 def fuck_89ip():
 	url = 'http://www.89ip.cn/tiqu.php?sxb=&tqsl=5000&ports=&ktip=&xl=on&submit=%CC%E1++%C8%A1'
 	html = mylib.get_html_from_url(url)
-	soup = BeautifulSoup(html, 'html.parser')
-	fuck = soup.find(class_ = "mass")
-	print fuck
+	
+
+	html = unicode(html, "gb2312").encode("utf8")
+	#pattern = re.compile(r'\d+\.\d+\.\d+\.\d+')
+	pattern = re.compile(r'(?<![\.\d])(?:\d{1,3}\.){3}\d{1,3}(?![\.\d])')
+	match = pattern.findall(html)
+
+	print match
+
+
+	#soup = BeautifulSoup(html, 'html.parser')
+	#fuck = soup.find(class_ = "mass")
+	
+
 
 	"""
 	table = soup.select('tbody')[0]

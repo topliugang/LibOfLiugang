@@ -80,3 +80,10 @@ def get_response_from_url(url, proxy_str=None, referer_str=None, timeout = 10):
 	finally:
 			if response:
 				response.close()
+
+
+if __name__ == '__main__':
+	url = 'http://spys.ru/free-proxy-list/CN/'
+	proxys = dict()
+	html = get_html_from_url(url, proxy_str='127.0.0.1:8087')
+	print html				

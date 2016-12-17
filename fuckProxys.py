@@ -90,16 +90,19 @@ def fuck_89ip():
 		proxys[ip] = port[1:]
 
 
+def fuck_spys():
+	url = 'http://spys.ru/free-proxy-list/CN/'
+	proxys = dict()
+	html = mylib.get_html_from_url(url, proxy_str='127.0.0.1:8087')
+	print html
 
+"""
 http://spys.ru/free-proxy-list/CN/
 http://gatherproxy.com/proxylist/country/?c=China
 http://cnproxy.com/proxy1.html
 http://www.proxylisty.com/country/China-ip-list
-
+"""
 
 if __name__ == '__main__':
-	#main()
-	#fuck_89ip()
-	fuck_89ip()
-
+	fuck_spys()
 

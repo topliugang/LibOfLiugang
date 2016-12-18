@@ -7,6 +7,8 @@ import StringIO
 #proxy_str: '127.0.0.1:8888'
 #user-agent is for mobile phone
 def get_html_from_url(url, proxy_str=None, referer_str=None, timeout = 10):
+	print '----------------------------------------'
+	print 'getting html from url:%s'%url
 	ua = 'Mozilla/5.0 (Linux; Android 4.4.2; HM NOTE 1TD Build/KOT49H) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/37.0.0.0 Mobile MQQBrowser/6.8 TBS/036887 Safari/537.36 MicroMessenger/6.3.31.940 NetType/WIFI Language/zh_CN'
 	request = urllib2.Request(url)
 	request.add_header('User-agent', ua)
@@ -23,7 +25,6 @@ def get_html_from_url(url, proxy_str=None, referer_str=None, timeout = 10):
 		cookie_opener = urllib2.build_opener(proxy_handler, cookie_handler)
 	else:
 		cookie_opener = urllib2.build_opener(cookie_handler)
-
 	try:
 		response = cookie_opener.open(request, timeout = timeout)
 		html = response.read()
@@ -34,9 +35,9 @@ def get_html_from_url(url, proxy_str=None, referer_str=None, timeout = 10):
 			data = StringIO.StringIO(html)
 			gz = gzip.GzipFile(fileobj = data)
 			html = gz.read()
-
-		
+	
 		print 'got html, response code %d'%response.code
+		print 
 		cookie.save(ignore_discard=True, ignore_expires=True)
 		return html
 	except urllib2.URLError as e:
@@ -77,13 +78,22 @@ def get_response_from_url(url, proxy_str=None, referer_str=None, timeout = 10):
 			print 'Error code:',e.code
 		elif hasattr(e, 'reason'):
 			print 'Reason:',e.reason
-	finally:
-			if response:
-				response.close()
+	#finally:
+	#		if response:
+	#			response.close()
 
 
 if __name__ == '__main__':
-	url = 'http://spys.ru/free-proxy-list/CN/'
+	
+	url = 'http://www.gatherproxy.com/zh/'
 	proxys = dict()
-	html = get_html_from_url(url, proxy_str='127.0.0.1:8087')
-	print html				
+	
+	pxy = '127.0.0.1:8087'
+	#pxy = None
+
+
+	#'http': 'http://127.0.0.1:8087',
+    #'https': 'http://127.0.0.1:8087',
+	html = get_html_from_url(url, proxy_str=pxy, timeout=20)
+	print html
+	#print unicode(html, "gb2312").encode("utf8")

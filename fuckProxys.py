@@ -2,7 +2,7 @@
 import mylib
 from bs4 import BeautifulSoup
 import re
-
+import sqlite3
 
 
 
@@ -25,6 +25,7 @@ def fuck_xicidaili():
 			port = tds[2].string
 			#put into dict
 			proxys[ip] = port
+	return proxys
 		
 		
 		
@@ -48,6 +49,7 @@ def fuck_kuaidaili():
 			port = tds[1].string
 			#put into dict
 			proxys[ip] = port
+	return proxys
 		
 		
 
@@ -69,6 +71,7 @@ def fuck_nianshao():
 			port = tds[1].string
 			#put into dict
 			proxys[ip] = port
+	return proxys
 		
 			
 
@@ -88,6 +91,7 @@ def fuck_89ip():
 		port = port_pattern.findall(ip_port)[0]
 		#print port[1:]
 		proxys[ip] = port[1:]
+	return proxys
 
 
 def fuck_spys():
@@ -98,11 +102,27 @@ def fuck_spys():
 
 """
 http://spys.ru/free-proxy-list/CN/
-http://gatherproxy.com/proxylist/country/?c=China
+http://www.gatherproxy.com/proxylist/country/?c=China
+http://www.gatherproxy.com/zh/
 http://cnproxy.com/proxy1.html
 http://www.proxylisty.com/country/China-ip-list
 """
 
 if __name__ == '__main__':
-	fuck_spys()
+	ip_port_dict = fuck_xicidaili()
 
+	print '@@@@@@@@@@@@@@@@@@@@@@@@@@@!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+	print len(ip_port_dict)
+
+	conn = sqlite3.connect('fuck.db')
+	for ip in ip_port_dict:
+		port = ip_port_dict[ip]
+		sql = '''
+			insert into proxy(ip, port) 
+			select ?, ?
+			where not exists (select 1 from proxy where ip=?); 
+			'''
+		conn.execute(sql, (ip, port, ip))
+		print 'sb'
+	conn.commit()	
+	conn.close()

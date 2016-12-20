@@ -107,22 +107,29 @@ http://www.gatherproxy.com/zh/
 http://cnproxy.com/proxy1.html
 http://www.proxylisty.com/country/China-ip-list
 """
-
-if __name__ == '__main__':
-	ip_port_dict = fuck_xicidaili()
-
-	print '@@@@@@@@@@@@@@@@@@@@@@@@@@@!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
-	print len(ip_port_dict)
-
-	conn = sqlite3.connect('fuck.db')
-	for ip in ip_port_dict:
-		port = ip_port_dict[ip]
-		sql = '''
+def insert(conn, ip, port):
+	sql = '''
 			insert into proxy(ip, port) 
 			select ?, ?
 			where not exists (select 1 from proxy where ip=?); 
 			'''
-		conn.execute(sql, (ip, port, ip))
-		print 'sb'
+	conn.execute(sql, (ip, port, ip))
 	conn.commit()	
+
+def select(conn):
+	sql = 'select * from proxy;'
+	cursor = conn.execute(sql)
+	for row in cursor:
+	   row[0]+':'+row[1]
+	   
+
+if __name__ == '__main__':
+	ip_port_dict = fuck_xicidaili()
+
+	conn = sqlite3.connect('fuck.db')
+	for ip in ip_port_dict:
+		port = ip_port_dict[ip]
+	
+		insert(conn, ip, port)
+
 	conn.close()

@@ -107,11 +107,17 @@ http://www.gatherproxy.com/zh/
 http://cnproxy.com/proxy1.html
 http://www.proxylisty.com/country/China-ip-list
 """
+def check_proxy(ip, port):
+	url = 'http://www.ip138.com/'
+	mylib.get_html_from_url(url, proxy_str = '%s:%s'%(ip, port))
 
 
 if __name__ == '__main__':
 	
-	testsql.insert(fuck_xicidaili())	
-	testsql.insert(fuck_kuaidaili())
-	testsql.insert(fuck_nianshao())
-	testsql.insert(fuck_89ip())
+	#testsql.insert(fuck_xicidaili())	
+	#testsql.insert(fuck_kuaidaili())
+	#testsql.insert(fuck_nianshao())
+	#testsql.insert(fuck_89ip())
+	ip_port_list = testsql.select(10)
+	for ip, port in ip_port_list:
+		check_proxy( ip, port )

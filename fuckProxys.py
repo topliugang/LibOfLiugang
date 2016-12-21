@@ -2,13 +2,13 @@
 import mylib
 from bs4 import BeautifulSoup
 import re
-import sqlite3
+import testsql
 
 
 
 def fuck_xicidaili():
 	urls = []
-	proxys = dict()# == proxys = {}
+	proxys = list()
 
 	for i in range(10, 1, -1):
 		urls.append('http://www.xicidaili.com/nn/%d/'%i) 
@@ -24,7 +24,7 @@ def fuck_xicidaili():
 			ip = tds[1].string
 			port = tds[2].string
 			#put into dict
-			proxys[ip] = port
+			proxys.append((ip, port))
 	return proxys
 		
 		
@@ -32,7 +32,7 @@ def fuck_xicidaili():
 
 def fuck_kuaidaili():
 	urls = []
-	proxys = dict()# == proxys = {}
+	proxys = list()
 
 	for i in range(10, 1, -1):
 		urls.append('http://www.kuaidaili.com/free/inha/%d/'%i) 
@@ -48,14 +48,14 @@ def fuck_kuaidaili():
 			ip = tds[0].string
 			port = tds[1].string
 			#put into dict
-			proxys[ip] = port
+			proxys.append((ip, port))
 	return proxys
 		
 		
 
 def fuck_nianshao():
 	urls = []
-	proxys = dict()# == proxys = {}
+	proxys = list()
 
 	for i in range(10, 1, -1):
 		urls.append('http://www.nianshao.me/?page=%d'%i) 
@@ -70,14 +70,14 @@ def fuck_nianshao():
 			ip = tds[0].string
 			port = tds[1].string
 			#put into dict
-			proxys[ip] = port
+			proxys.append((ip, port))
 	return proxys
 		
 			
 
 def fuck_89ip():
 	url = 'http://www.89ip.cn/tiqu.php?sxb=&tqsl=5000&ports=&ktip=&xl=on&submit=%CC%E1++%C8%A1'
-	proxys = dict()# == proxys = {}
+	proxys = list()
 	html = mylib.get_html_from_url(url)
 	#html = unicode(html, "gb2312").encode("utf8")
 	#编码问题 显示的时候加上
@@ -89,14 +89,14 @@ def fuck_89ip():
 		#print ip
 		port_pattern = re.compile(r':\d{1,5}')
 		port = port_pattern.findall(ip_port)[0]
-		#print port[1:]
-		proxys[ip] = port[1:]
+		port = port[1:]
+		proxys.append((ip, port))
 	return proxys
 
 
 def fuck_spys():
 	url = 'http://spys.ru/free-proxy-list/CN/'
-	proxys = dict()
+	proxys = list()
 	html = mylib.get_html_from_url(url, proxy_str='127.0.0.1:8087')
 	print html
 
@@ -107,29 +107,11 @@ http://www.gatherproxy.com/zh/
 http://cnproxy.com/proxy1.html
 http://www.proxylisty.com/country/China-ip-list
 """
-def insert(conn, ip, port):
-	sql = '''
-			insert into proxy(ip, port) 
-			select ?, ?
-			where not exists (select 1 from proxy where ip=?); 
-			'''
-	conn.execute(sql, (ip, port, ip))
-	conn.commit()	
 
-def select(conn):
-	sql = 'select * from proxy;'
-	cursor = conn.execute(sql)
-	for row in cursor:
-	   row[0]+':'+row[1]
-	   
 
 if __name__ == '__main__':
-	ip_port_dict = fuck_xicidaili()
-
-	conn = sqlite3.connect('fuck.db')
-	for ip in ip_port_dict:
-		port = ip_port_dict[ip]
 	
-		insert(conn, ip, port)
-
-	conn.close()
+	testsql.insert(fuck_xicidaili())	
+	testsql.insert(fuck_kuaidaili())
+	testsql.insert(fuck_nianshao())
+	testsql.insert(fuck_89ip())

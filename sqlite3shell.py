@@ -14,7 +14,7 @@ while True:
 	if line == '':
 		break
 	buffer += line
-	if sqlite3.    (buffer):
+	if sqlite3.complete_statement(buffer):
 		try:
 			buffer = buffer.strip()
 			cur.execute(buffer)

@@ -82,17 +82,17 @@ def check_url_avalible(url, proxy_str=None, referer_str=None, timeout = 10, weix
 
 if __name__ == '__main__':
 	
-	url = 'http://www.gatherproxy.com/zh/'
-	url = 'http://www.ip138.com/'
-	#url = 'http://www.baidu.com/'
-	pxy = '127.0.0.1:8888'
-	#'http': 'http://127.0.0.1:8087',
-    #'https': 'http://127.0.0.1:8087',
-	html = get_html_from_url(url, timeout=20, proxy_str=pxy)
-	#html = urllib2.urlopen(url)
-
-	#print info
-	#print unicode(html, "gb2312").encode("utf8")
+	urls = ['http://spys.ru/free-proxy-list/CN/',
+			#'http://www.gatherproxy.com/proxylist/country/?c=China/',
+			#'http://www.gatherproxy.com/zh/',
+			#'http://cnproxy.com/proxy1.html/',
+			#'http://www.proxylisty.com/country/China-ip-list/',
+			]
+	
+	for url in urls:
+		pxy = '127.0.0.1:49258'
+		html = get_html_from_url(url, timeout=20, proxy_str=pxy)
+		print html
 
 
 

@@ -2,7 +2,7 @@
 import mylib
 from bs4 import BeautifulSoup
 import re
-import testsql
+import sqllib
 
 
 
@@ -40,15 +40,17 @@ def fuck_kuaidaili():
 	
 	for url in urls:
 		html = mylib.get_html_from_url(url)
-		soup = BeautifulSoup(html, 'html.parser')
-		table = soup.select('tbody')[0]
-		trs = table.select('tr')
-		for tr in trs:
-			tds = tr.select('td')
-			ip = tds[0].string
-			port = tds[1].string
-			#put into dict
-			proxys.append((ip, port))
+		
+		if html:
+			soup = BeautifulSoup(html, 'html.parser')
+			table = soup.select('tbody')[0]
+			trs = table.select('tr')
+			for tr in trs:
+				tds = tr.select('td')
+				ip = tds[0].string
+				port = tds[1].string
+				#put into dict
+				proxys.append((ip, port))
 	return proxys
 		
 		
@@ -114,10 +116,11 @@ def check_proxy(ip, port):
 
 if __name__ == '__main__':
 	
-	#testsql.insert(fuck_xicidaili())	
-	#testsql.insert(fuck_kuaidaili())
-	#testsql.insert(fuck_nianshao())
-	#testsql.insert(fuck_89ip())
-	ip_port_list = testsql.select(10)
+	sqllib.delete_all()
+	sqllib.insert(fuck_xicidaili())	
+	#sqllib.insert(fuck_kuaidaili())
+	#sqllib.insert(fuck_nianshao())
+	#sqllib.insert(fuck_89ip())
+	ip_port_list = sqllib.select()
 	for ip, port in ip_port_list:
 		check_proxy( ip, port )
